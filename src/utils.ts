@@ -29,7 +29,7 @@ export function iterateState(
                 ...currentState,
                 key,
             }));
-            if (currentState && currentState.states && currentState.states.length) {
+            if (currentState && currentState.states && Object.keys(currentState.states).length) {
                 iterateState(
                     currentState.states,
                     iterate,

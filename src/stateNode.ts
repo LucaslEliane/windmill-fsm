@@ -110,16 +110,20 @@ export default class StateNode {
     }
 
 
-    public get getConfig() {
-        return null;
+    public get getKey(): string {
+        return this.key;
     }
 
-    public get ons() {
-        return null;
+    public get getActions(): object[] {
+        return this.actions;
     }
 
-    public get hooks() {
-        return null;
+    public get getId(): string {
+        return this.id;
+    }
+
+    public get getParent(): StateNode | null {
+        return this.parent;
     }
 
 }

@@ -10,7 +10,7 @@ class Windmill implements IMachine {
     public current: StateNode;
     public initialNode: StateNode;
     
-    private nodeMap: Map<string, any>;
+    private _nodeMap: Map<string, any>;
     private initialState: string;
 
     constructor(config: any, options?: any) {
@@ -25,7 +25,7 @@ class Windmill implements IMachine {
         this.history = [];
 
 
-        this.nodeMap = new Map();
+        this._nodeMap = new Map();
         config.states
             && iterateState(
                 config.states,
@@ -34,7 +34,7 @@ class Windmill implements IMachine {
                         ...stateConfig,
                         parent: this.root,
                     });
-                    this.nodeMap.set(stateNode.key, stateNode);
+                    this._nodeMap.set(stateNode.key, stateNode);
                 },
                 0,
             );
@@ -51,14 +51,14 @@ class Windmill implements IMachine {
             return this;
         }
         const start = startNode || this.initialState;
-        if (!this.nodeMap.has(start)) {
+        if (!this._nodeMap.has(start)) {
             throw new ParametersError(`
-                Start state is not in the nodeMap, please check your
+                Start state is not in the _nodeMap, please check your
                 parameter ${startNode}
             `);
         }
 
-        this.current = this.nodeMap.get(start);
+        this.current = this._nodeMap.get(start);
         this.history.push(start);
         return this;
     }
@@ -95,15 +95,19 @@ class Windmill implements IMachine {
             state = [];
         }
 
-        const { nodeMap } = this;
+        const { _nodeMap } = this;
 
-        nodeMap.forEach((v, k) => {
+        _nodeMap.forEach((v, k) => {
             if (hookAll || (state && ~state.indexOf(k))) {
-                nodeMap.get(k).bindHooks(hooks);
+                _nodeMap.get(k).bindHooks(hooks);
             }
         });
 
         return this;
+    }
+
+    public get nodeMap(): Map<string, any> {
+        return this._nodeMap;
     }
 
     private _resolveStateToNode(
@@ -111,13 +115,13 @@ class Windmill implements IMachine {
     ) {
         const nextState = this.current.findNextState(action);
 
-        if (!this.nodeMap.has(nextState)) {
+        if (!this._nodeMap.has(nextState)) {
             throw new TransitionError(
                 `target state: \`${nextState}\` is not exist.`
             )
         }
 
-        const target = this.nodeMap.get(nextState);
+        const target = this._nodeMap.get(nextState);
 
         target.transition(
             nextState,
@@ -132,7 +136,7 @@ class Windmill implements IMachine {
         result: string,
         hooks: () => void,
     ) {
-        const resultNode = this.nodeMap.get(result);
+        const resultNode = this._nodeMap.get(result);
 
         if (!resultNode) {
             throw new Error(`目标状态：\`${result}\`不存在!`);

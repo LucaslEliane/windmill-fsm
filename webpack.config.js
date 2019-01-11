@@ -21,11 +21,12 @@ module.exports = {
                         loader: 'babel-loader',
                     },
                 ],
-                exclude: /node_modules/,
+                exclude: [/node_modules/, /__tests__/],
             },
             {
                 test: /\.tsx?$/,
-                loader: 'awesome-typescript-loader'
+                loader: 'awesome-typescript-loader',
+                exclude: [/node_modules/, /__tests__/],
             },
             {
                 test: /\.less$/,
