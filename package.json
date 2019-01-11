@@ -12,7 +12,8 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server --port 7999 --host 0.0.0.0 --content-base examples/ --config webpack.config.js --progress --hot --inline",
     "build": "rollup -c",
     "watch": "rollup -cw",
-    "test": "jest"
+    "test": "jest",
+    "coveralls": "npm run test && cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
@@ -39,6 +40,7 @@
     "@types/react": "^16.7.18",
     "@types/react-dom": "^16.0.11",
     "awesome-typescript-loader": "^5.2.1",
+    "coveralls": "^3.0.2",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.0",
     "file-loader": "^3.0.1",

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1547191341131" clover="3.2.0">
-  <project timestamp="1547191341131" name="All files">
+<coverage generated="1547194812791" clover="3.2.0">
+  <project timestamp="1547194812792" name="All files">
     <metrics statements="135" coveredstatements="128" conditionals="86" coveredconditionals="66" methods="32" coveredmethods="32" elements="253" coveredelements="226" complexity="0" loc="135" ncloc="135" packages="1" files="5" classes="5">
       <file name="constants.ts" path="/Users/luxin/Develop/toy/windmill-fsm/src/constants.ts">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
