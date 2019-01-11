@@ -11,10 +11,10 @@ describe('Base stateNode test', () => {
             parent: parentNode,
         });
 
-        const actions = testStateNode.getActions;
-        const id = testStateNode.getId;
-        const key = testStateNode.getKey;
-        const parent = testStateNode.getParent;
+        const actions = testStateNode.actions;
+        const id = testStateNode.id;
+        const key = testStateNode.key;
+        const parent = testStateNode.parent;
 
         expect(actions.length).toEqual(1);
         expect(id).toBe('[default].active');
@@ -24,9 +24,9 @@ describe('Base stateNode test', () => {
     it('check empty constructor', () => {
         const emptyNode = new StateNode({});
 
-        const actions = emptyNode.getActions;
-        const id = emptyNode.getId;
-        const key = emptyNode.getKey;
+        const actions = emptyNode.actions;
+        const id = emptyNode.id;
+        const key = emptyNode.key;
         
         expect(actions.length).toEqual(0);
         expect(id).toBe('[default]');

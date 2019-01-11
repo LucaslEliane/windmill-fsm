@@ -32,11 +32,12 @@ class Windmill implements IMachine {
                 (stateConfig: any) => {
                     const stateNode = new StateNode({
                         ...stateConfig,
-                        parent: this.root,
                     });
                     this._nodeMap.set(stateNode.key, stateNode);
+                    return stateNode;
                 },
                 0,
+                this.root,
             );
     }
 
@@ -106,8 +107,37 @@ class Windmill implements IMachine {
         return this;
     }
 
+    public rollback(
+        state?: string
+    ) {
+        let popState = state;
+        if (!state) {
+            popState = this.history[this.history.length];
+        }
+
+        if (!~this.history.indexOf(popState)) return;
+
+        popState && this._execRollback(popState);
+    }
+
     public get nodeMap(): Map<string, any> {
         return this._nodeMap;
+    }
+
+    private _execRollback(
+        state: string,
+    ) {
+        const { history } = this;
+
+        const target = this._nodeMap.get(state);
+
+        target.emit('before');
+
+        while(history.pop() === state) break;
+
+        history.push(state);
+
+        target.emit('after');
     }
 
     private _resolveStateToNode(

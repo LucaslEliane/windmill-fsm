@@ -1,22 +1,25 @@
+import StateNode from './stateNode';
+
 export function iterateState(
     states: any,
-    iterate: (stateConfig: any) => void,
+    iterate: (stateConfig: any) => StateNode,
     depth: number,
+    parent?: StateNode
 ) {
-    if (!states) { return new Map(); }
-
-    const keys = Object.keys(states);
-
-    if (!(states && keys && keys.length)) {
-        return new Map();
+    if (depth) {
+        if (!states) { return; }
+    
+        const keys = Object.keys(states);
+    
+        if (!(states && keys && keys.length)) {
+            return;
+        }
     }
 
     depth >= 5 && console.error(`
         State nesting level is too deep,
         please flatten your states or components
     `);
-
-    const result = new Map();
 
     depth++;
 
@@ -25,20 +28,20 @@ export function iterateState(
     Object.keys(states)
         .forEach((key, i) => {
             currentState = states[key];
-            result.set(key, iterate({
+            const node = iterate({
                 ...currentState,
                 key,
-            }));
+                parent,
+            });
             if (currentState && currentState.states && Object.keys(currentState.states).length) {
                 iterateState(
                     currentState.states,
                     iterate,
                     depth,
+                    node,
                 );
             }
-        })
-
-    return result;
+        });
 }
 
 export function toArray<T>(value: T[] | undefined | T): T[] {

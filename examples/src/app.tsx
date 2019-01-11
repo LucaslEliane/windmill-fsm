@@ -9,15 +9,24 @@ const baseMachine = new Windmill({
   initialState: 'inactive',
   name: 'toggle',
   states: {
-    active: {
-      on: {
-        STAY: 'active',
-        TOGGLE: 'inactive',
+      active: {
+          on: {
+              STAY: 'active',
+              TOGGLE: 'inactive',
+          },
+          states: {
+              active_twice: {
+                  on: {
+                      TOGGLE: 'inactive',
+                  }
+              }
+          }
       },
-    },
-    inactive: {
-      on: {TOGGLE: 'active'}
-    },
+      inactive: {
+          on: {
+              TOGGLE: 'active'
+          }
+      },
   }
 });
 

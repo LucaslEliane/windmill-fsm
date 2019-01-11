@@ -27,7 +27,7 @@ describe('Base Windmill test', () => {
     });
     it('check constructor', () => {
         const currentNode = windmill.current;
-        const key = currentNode.getKey;
+        const key = currentNode.key;
 
         expect(key).toBe('toggle');
         expect(windmill.nodeMap.get('active').getActions.length).toBe(2);
@@ -76,7 +76,7 @@ describe('Base Transition test', () => {
 
         const currentNode = windmill.current;
 
-        const key = currentNode.getKey;
+        const key = currentNode.key;
 
         expect(key).toBe('inactive');
     });
@@ -96,7 +96,7 @@ describe('Base Transition test', () => {
 
         const currentNode = windmill.current;
 
-        expect(currentNode.getKey).toBe('active');
+        expect(currentNode.key).toBe('active');
     });
     it('expect transition error', () => {
         windmill.transition('WRONG');

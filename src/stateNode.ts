@@ -1,5 +1,6 @@
 import {
     DEFAULT_SPLITTER,
+    HOOK_MAP,
 } from './constants';
 
 import {
@@ -13,52 +14,59 @@ import {
 } from './utils';
 
 export default class StateNode {
-    public key: any;
-    public parent: StateNode | null;
-    public route: any[];
-    public splitter: string;
-    public id: string;
-    public series: boolean;
-    public beforeTransition: HookFunction[];
-    public afterTransition: HookFunction[];
-    public actions: object[];
-    public config: any;
+    private _key: any;
+    private _parent: StateNode | null;
+    private _route: any[];
+    private _splitter: string;
+    private _id: string;
+    // private _series: boolean;
+    private _beforeTransition: HookFunction[];
+    private _afterTransition: HookFunction[];
+    private _actions: object[];
+    // private _config: any;
 
 
     constructor(config: any, options?: any) {
-        this.key = config.key || config.name || '[default]';
-        this.parent = config.parent;
-        this.route = this.parent ? this.parent.route.concat(this.key) : [this.key];
-        this.splitter = (options && options.splitter) || DEFAULT_SPLITTER;
-        this.id = this.route.length ?
-            this.route.join(this.splitter) :
+        this._key = config.key || config.name || '[default]';
+        this._parent = config.parent;
+        this._route = this._parent ? this._parent.route.concat(this.key) : [this.key];
+        this._splitter = (options && options.splitter) || DEFAULT_SPLITTER;
+        this._id = this._route.length ?
+            this._route.join(this._splitter) :
             '';
         
-        this.series = !!(config.on && config.on['']);
+        // this._series = !!(config.on && config.on['']);
 
-        this.beforeTransition = toArray<HookFunction>(config.beforeTransition);
-        this.afterTransition = toArray<HookFunction>(config.afterTransition);
-        this.actions = ObjToArray(config.on);
-        this.config = config;
+        this._beforeTransition = toArray<HookFunction>(config.beforeTransition);
+        this._afterTransition = toArray<HookFunction>(config.afterTransition);
+        this._actions = ObjToArray(config.on);
+        // this._config = config;
     }
 
     public findNextState(
         action?: string,
     ): string {
-        const { actions } = this;
+        const { _actions } = this;
 
-        let actionObj = actions.length && actions[0];
+        let actionObj = !action && _actions.length && _actions[0];
 
+        action && _actions.forEach(v => {
+            v[action] && ( actionObj = v );
+        });
+        
         if (!actionObj) {
+            if (action) {
+                throw new Error(`
+                    action ${action} is not exist in
+                    ${this._id} 's _actions list.
+                `)
+            }
             throw new Error(`
-                StateNode ${this.id} 's actions is empty,
+                StateNode ${this._id} 's _actions is empty,
                 But you try to transition an action.
             `);
         }
 
-        action && actions.forEach(v => {
-            v[action] && ( actionObj = v );
-        });
 
         const actionName = Object.keys(actionObj)[0];
         const state = actionObj[actionName];
@@ -67,16 +75,16 @@ export default class StateNode {
     }
 
     public bindHooks(hooks: IHooks) {
-        const { beforeTransition, afterTransition } = this;
+        const { _beforeTransition, _afterTransition } = this;
         const before = hooks.before || [];
         const after = hooks.after || [];
 
         before.forEach(f => {
-            !~beforeTransition.indexOf(f) && beforeTransition.push(f);
+            !~_beforeTransition.indexOf(f) && _beforeTransition.push(f);
         });
 
         after.forEach(f => {
-            !~afterTransition.indexOf(f) && afterTransition.push(f);
+            !~_afterTransition.indexOf(f) && _afterTransition.push(f);
         });
     }
 
@@ -86,7 +94,7 @@ export default class StateNode {
         cb: (result: string, cb: () => void) => void
     ) {
         try {
-            this.beforeTransition.forEach(value => {
+            this._beforeTransition.forEach(value => {
                 value && value();
             });
         } catch (e) {
@@ -103,27 +111,49 @@ export default class StateNode {
         throw new Error(`目标状态：\`${action}\`不存在!`);
     }
 
+    public emit(
+        ...args: any[]
+    ) {
+        const event = args[0];
+
+        if (!event) return;
+
+        const eventMap = this[HOOK_MAP[event]];
+
+        try {
+            eventMap.forEach((v: HookFunction) => {
+                v && v(...args);
+            });
+        } catch (err) {
+            console.error(`callback error: ${err}`);
+        }
+    }
+
     private _afterHooks(state?: string) {
-        this.afterTransition.forEach(value => {
+        this._afterTransition.forEach(value => {
             value(state);
         });
     }
 
 
-    public get getKey(): string {
-        return this.key;
+    public get key(): string {
+        return this._key;
     }
 
-    public get getActions(): object[] {
-        return this.actions;
+    public get actions(): object[] {
+        return this._actions;
     }
 
-    public get getId(): string {
+    public get id(): string {
         return this.id;
     }
 
-    public get getParent(): StateNode | null {
-        return this.parent;
+    public get parent(): StateNode | null {
+        return this._parent;
+    }
+
+    public get route(): any[] {
+        return this._route;
     }
 
 }
