@@ -20,14 +20,14 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">96.67% </span>
+        <span class="strong">93.1% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>29/30</span>
+        <span class='fraction'>27/29</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">90% </span>
+        <span class="strong">86.36% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>18/20</span>
+        <span class='fraction'>19/22</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>5/5</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">96.43% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>29/29</span>
+        <span class='fraction'>27/28</span>
       </div>
     </div>
   </div>
@@ -108,34 +108,41 @@
 63
 64
 65
-66</td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
+66
+67
+68
+69</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -148,7 +155,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
@@ -173,25 +179,28 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export function iterateState(
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import StateNode from './stateNode';
+&nbsp;
+export function iterateState(
     states: any,
-    iterate: (stateConfig: any) =&gt; void,
+    iterate: (stateConfig: any) =&gt; StateNode,
     depth: number,
+    parent?: StateNode
 ) {
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (!states) { <span class="cstat-no" title="statement not covered" >return new Map(); </span>}
-&nbsp;
-    const keys = Object.keys(states);
-&nbsp;
-    if (!(states &amp;&amp; keys &amp;&amp; keys.length)) {
-        return new Map();
+    if (depth) {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (!states) { <span class="cstat-no" title="statement not covered" >return; </span>}
+    
+        const keys = Object.keys(states);
+    
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (!(states &amp;&amp; keys &amp;&amp; keys.length)) {
+<span class="cstat-no" title="statement not covered" >            return;</span>
+        }
     }
 &nbsp;
     depth &gt;= 5 &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >console.error(`</span>
         State nesting level is too deep,
         please flatten your states or components
     `);
-&nbsp;
-    const result = new Map();
 &nbsp;
     depth++;
 &nbsp;
@@ -200,20 +209,20 @@
     Object.keys(states)
         .forEach((key, i) =&gt; {
             currentState = states[key];
-            result.set(key, iterate({
+            const node = iterate({
                 ...currentState,
                 key,
-            }));
+                parent,
+            });
             if (currentState &amp;&amp; currentState.states &amp;&amp; Object.keys(currentState.states).length) {
                 iterateState(
                     currentState.states,
                     iterate,
                     depth,
+                    node,
                 );
             }
-        })
-&nbsp;
-    return result;
+        });
 }
 &nbsp;
 export function toArray&lt;T&gt;(value: T[] | undefined | T): T[] {
@@ -244,7 +253,7 @@ export function ObjToArray(value: object | undefined): object[] {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Jan 11 2019 16:20:12 GMT+0800 (中国标准时间)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Jan 11 2019 20:42:30 GMT+0800 (中国标准时间)
 </div>
 </div>
 <script src="prettify.js"></script>

@@ -30,7 +30,7 @@ describe('Base Windmill test', () => {
         const key = currentNode.key;
 
         expect(key).toBe('toggle');
-        expect(windmill.nodeMap.get('active').getActions.length).toBe(2);
+        expect(windmill.nodeMap.get('active').actions.length).toBe(2);
     });
     it('empty states', () => {
         const emptyStates = new Windmill({
