@@ -1,3 +1,2 @@
-export default class Windmill {
-}
+export {};
 //# sourceMappingURL=index.d.ts.map

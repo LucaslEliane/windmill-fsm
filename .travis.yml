@@ -1,0 +1,8 @@
+language: node_js
+
+before_script:
+    - npm run build
+
+scirpt:
+    - npm run test
+

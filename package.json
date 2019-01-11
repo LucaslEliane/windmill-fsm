@@ -2,10 +2,16 @@
   "name": "windmill-fsm",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "module": "lib/index.es.js",
+  "files": [
+    "lib"
+  ],
+  "types": "lib/index.d.ts",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --port 7999 --host 0.0.0.0 --content-base examples/ --config webpack.config.js --progress --hot --inline",
-    "build": "tsc",
+    "build": "rollup -c",
+    "watch": "rollup -cw",
     "test": "jest"
   },
   "repository": {
@@ -46,6 +52,7 @@
     "react-dom": "^16.7.0",
     "rollup": "^1.1.0",
     "rollup-plugin-typescript2": "^0.18.1",
+    "rollup-plugin-uglify": "^6.0.0",
     "source-map-support": "^0.5.9",
     "style-loader": "^0.23.1",
     "ts-jest": "^23.10.5",
